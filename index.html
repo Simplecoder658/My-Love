@@ -10,10 +10,54 @@
         :root { --pink: #ff85a1; --dark-pink: #c9184a; --bg: #fff0f3; }
         body { margin: 0; font-family: 'Quicksand', sans-serif; background: var(--bg); height: 100vh; width: 100vw; overflow: hidden; }
         
-        /* LOGIN */
-        #login-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; z-index: 1000; position: fixed; width: 100%; }
-        input { padding: 12px; border: 2px solid var(--pink); border-radius: 10px; text-align: center; outline: none; }
-        .btn { background: var(--dark-pink); color: white; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+        /* LOGIN TENGAH LAYAR */
+        #login-screen { 
+            height: 100vh; 
+            width: 100vw;
+            display: flex; 
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            background: var(--bg); 
+            z-index: 1000; 
+            position: fixed; 
+            top: 0; left: 0;
+            text-align: center;
+        }
+        
+        .login-box {
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 10px 30px rgba(201, 24, 74, 0.1);
+            border: 2px solid var(--pink);
+        }
+
+        input { 
+            padding: 15px; 
+            border: 2px solid #eee; 
+            border-radius: 12px; 
+            text-align: center; 
+            outline: none; 
+            width: 200px;
+            font-size: 1rem;
+            transition: 0.3s;
+        }
+        input:focus { border-color: var(--pink); }
+
+        .btn { 
+            background: var(--dark-pink); 
+            color: white; 
+            border: none; 
+            padding: 12px 30px; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            margin-top: 20px; 
+            font-weight: bold; 
+            width: 100%;
+            transition: 0.3s;
+        }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(201, 24, 74, 0.3); }
 
         /* MAIN LAYOUT */
         #main-content { display: none; grid-template-columns: 1fr 1fr; height: 100vh; width: 100vw; }
@@ -25,14 +69,12 @@
         .flame { width: 22px; height: 32px; background: orange; border-radius: 50%; position: absolute; top: -28px; left: -3px; animation: flicker 0.1s infinite alternate; cursor: pointer; box-shadow: 0 0 20px orange; }
         @keyframes flicker { from { transform: scale(1); } to { transform: scale(1.2); } }
 
-        /* PHOTO GRID */
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
         .photo-slot { aspect-ratio: 4/3; background: #ffe5ec; border-radius: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px dashed var(--pink); position: relative; }
         .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
-        .edit-label { display: none; position: absolute; background: var(--dark-pink); color: white; padding: 5px 10px; font-size: 0.7rem; border-radius: 5px; cursor: pointer; }
+        .edit-label { display: none; position: absolute; background: var(--dark-pink); color: white; padding: 5px 10px; font-size: 0.7rem; border-radius: 5px; cursor: pointer; top: 10px; }
 
-        /* GUESTBOOK */
-        .guestbook { background: white; padding: 15px; border-radius: 20px; text-align: center; }
+        .guestbook { background: white; padding: 15px; border-radius: 20px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
         .sticker { font-size: 2.2rem; cursor: pointer; margin: 0 5px; transition: 0.2s; display: inline-block; }
         .secret-msg { font-family: 'Dancing Script'; font-size: 3.5rem; color: var(--dark-pink); animation: pop 0.6s ease-out; }
         @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
@@ -40,36 +82,41 @@
 </head>
 <body>
 
+    <!-- LAYAR LOGIN DI TENGAH -->
     <div id="login-screen">
-        <h2 style="color: var(--dark-pink);">Password?</h2>
-        <input type="password" id="pass" placeholder="...">
-        <button class="btn" onclick="checkLogin()">Login</button>
+        <div class="login-box">
+            <h2 style="color: var(--dark-pink); margin-top: 0;">Siapa ini? ❤️</h2>
+            <input type="password" id="pass" placeholder="Masukkan Password...">
+            <br>
+            <button class="btn" onclick="checkLogin()">Masuk</button>
+        </div>
     </div>
 
+    <!-- MAIN CONTENT -->
     <div id="main-content">
         <div class="left-side">
             <h1 id="user-title">Happy Birthday, Nadine!</h1>
-            <p id="user-sub">You're the sweetest part of my life. ❤️</p>
+            <p id="user-sub">Setiap hari bersamamu adalah anugerah. ❤️</p>
             <div id="candle-sec">
                 <div class="candle"><div id="flame" class="flame" onclick="blowOut()"></div></div>
-                <p id="hint" style="font-size: 0.8rem; color: #666;">Tiup lilinnya (klik api)</p>
+                <p id="hint" style="font-size: 0.8rem; color: #666;">Klik api lilinnya...</p>
             </div>
         </div>
 
         <div class="right-side">
             <h3 style="color: var(--dark-pink); margin-top: 0;">Memories 📸</h3>
             <div class="grid">
-                <div class="photo-slot" id="slot-0">
+                <div class="photo-slot">
                     <img id="img-0" src="https://placeholder.com">
-                    <label class="edit-label" id="label-0">Ganti Foto <input type="file" style="display:none" onchange="preview(event, 0)"></label>
+                    <label class="edit-label" id="label-0">Edit <input type="file" style="display:none" onchange="preview(event, 0)"></label>
                 </div>
-                <div class="photo-slot" id="slot-1">
+                <div class="photo-slot">
                     <img id="img-1" src="https://placeholder.com">
-                    <label class="edit-label" id="label-1">Ganti Foto <input type="file" style="display:none" onchange="preview(event, 1)"></label>
+                    <label class="edit-label" id="label-1">Edit <input type="file" style="display:none" onchange="preview(event, 1)"></label>
                 </div>
             </div>
             <div class="guestbook">
-                <p style="font-size: 0.8rem; color: #666;">Beri Nadine Stiker:</p>
+                <p style="font-size: 0.8rem; color: #666;">Beri Stiker:</p>
                 <span class="sticker" onclick="addSticker('💖')">💖</span>
                 <span class="sticker" onclick="addSticker('🎂')">🎂</span>
                 <span class="sticker" onclick="addSticker('✨')">✨</span>
@@ -79,27 +126,24 @@
     </div>
 
     <script>
-        let mode = "nadine";
-
         function checkLogin() {
             const p = document.getElementById('pass').value;
             const main = document.getElementById('main-content');
             const login = document.getElementById('login-screen');
 
             if(p === "LOVE") {
-                mode = "nadine";
                 login.style.display = 'none';
                 main.style.display = 'grid';
+                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
             } else if(p === "ibad") {
-                mode = "ibad";
                 login.style.display = 'none';
                 main.style.display = 'grid';
-                // Aktifkan tombol edit cuma buat Ibad
                 document.getElementById('label-0').style.display = 'block';
                 document.getElementById('label-1').style.display = 'block';
-                document.getElementById('user-title').innerText = "Preview Mode (Ibad)";
-                document.getElementById('user-sub').innerText = "Di sini kamu bisa tes ganti foto";
-            } else { alert("Password salah!"); }
+                document.getElementById('user-title').innerText = "Preview Ibad 😎";
+            } else {
+                alert("Password salah!");
+            }
         }
 
         function blowOut() {
@@ -107,12 +151,19 @@
             document.getElementById('hint').style.display = 'none';
             
             // Kembang Api Meriah
-            var end = Date.now() + (3 * 1000);
-            (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
+            var duration = 3 * 1000;
+            var animationEnd = Date.now() + duration;
+            var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 0 };
+
+            function randomInRange(min, max) { return Math.random() * (max - min) + min; }
+
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                var particleCount = 50 * (timeLeft / duration);
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 } }));
+                confetti(Object.assign({}, defaults, { particleCount, origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 } }));
+            }, 250);
 
             document.getElementById('candle-sec').innerHTML = "<div class='secret-msg'>I Love You Forever</div>";
         }
@@ -122,292 +173,15 @@
             reader.onload = function(){
                 document.getElementById('img-' + idx).src = reader.result;
             };
-            reader.readAsDataURL(event.target.files[0]);
-        }
-
-        function addSticker(s) {
-            const span = document.createElement('span');
-            span.innerText = s;
-            span.style.fontSize = "2rem";
-            document.getElementById('messages').appendChild(span);
-            confetti({ particleCount: 10, spread: 30, origin: { x: 0.7, y: 0.8 } });
-        }
-    </script>
-</body>
-</html>
-            justify-content: center; align-items: center;
-            padding: 20px; border-right: 2px dashed var(--pink);
-        }
-
-        /* SISI KANAN: Gallery & Guestbook */
-        .right-side {
-            padding: 20px; overflow-y: auto;
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--dark-pink); margin: 0; }
-        
-        /* LILIN DIGITAL */
-        .candle-section { text-align: center; margin-top: 20px; }
-        .candle { width: 15px; height: 60px; background: #ff4d6d; margin: 30px auto; position: relative; border-radius: 5px; }
-        .flame { 
-            width: 22px; height: 32px; background: orange; border-radius: 50%; 
-            position: absolute; top: -28px; left: -3px; 
-            animation: flicker 0.1s infinite alternate; cursor: pointer; 
-            box-shadow: 0 0 20px orange;
-        }
-        @keyframes flicker { from { transform: scale(1); } to { transform: scale(1.2); } }
-
-        /* GALLERY */
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
-        .photo-slot { 
-            aspect-ratio: 4/3; background: #ffe5ec; border-radius: 15px; 
-            display: flex; align-items: center; justify-content: center; 
-            overflow: hidden; border: 2px dashed var(--pink); cursor: pointer;
-            position: relative;
-        }
-        .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
-        
-        /* GUESTBOOK */
-        .guestbook { background: white; padding: 15px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: center; }
-        .sticker { font-size: 2.2rem; cursor: pointer; margin: 0 5px; transition: 0.2s; display: inline-block; }
-        .sticker:hover { transform: scale(1.2); }
-
-        .secret-msg { font-family: 'Dancing Script'; font-size: 3.5rem; color: var(--dark-pink); animation: pop 0.6s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
-        @keyframes pop { from { transform: scale(0); rotate: -10deg; } to { transform: scale(1); rotate: 0deg; } }
-
-        input { padding: 12px; border: 2px solid var(--pink); border-radius: 10px; text-align: center; outline: none; }
-        .btn { background: var(--dark-pink); color: white; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer; margin-top: 10px; font-weight: bold; }
-    </style>
-</head>
-<body>
-
-    <!-- LOGIN -->
-    <div id="login-screen">
-        <h2 style="color: var(--dark-pink); margin-bottom: 10px;">Who are you?</h2>
-        <input type="password" id="pass" placeholder="Password...">
-        <button class="btn" onclick="checkLogin()">Open Card</button>
-    </div>
-
-    <!-- MAIN CONTENT (LANDSCAPE) -->
-    <div id="main-content">
-        <!-- KIRI -->
-        <div class="left-side">
-            <h1>Happy Birthday, Nadine!</h1>
-            <p>You're the sweetest part of my life. ❤️</p>
-            
-            <div class="candle-section" id="candle-sec">
-                <p style="font-size: 0.9rem; color: #666;">Tiup lilinnya untuk kejutan...</p>
-                <div class="candle">
-                    <div id="flame" class="flame" onclick="blowOut()"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- KANAN -->
-        <div class="right-side">
-            <h3 style="color: var(--dark-pink); margin-top: 0;">Our Memories 📸</h3>
-            <div class="grid">
-                <label class="photo-slot"><input type="file" style="display:none" onchange="preview(event, 0)"><span>+</span></label>
-                <label class="photo-slot"><input type="file" style="display:none" onchange="preview(event, 1)"><span>+</span></label>
-            </div>
-
-            <div class="guestbook">
-                <p style="font-size: 0.8rem; color: #666; margin-bottom: 10px;">Beri Nadine stiker (10x untuk kembang api):</p>
-                <div class="stickers-row">
-                    <span class="sticker" onclick="addSticker('💖')">💖</span>
-                    <span class="sticker" onclick="addSticker('🎂')">🎂</span>
-                    <span class="sticker" onclick="addSticker('✨')">✨</span>
-                    <span class="sticker" onclick="addSticker('🌸')">🌸</span>
-                </div>
-                <div id="messages" style="margin-top: 10px; overflow-wrap: break-word;"></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let stickerCount = 0;
-
-        function checkLogin() {
-            const p = document.getElementById('pass').value;
-            if(p === "LOVE") {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-content').style.display = 'grid';
-                confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-            } else { alert("Password salah!"); }
-        }
-
-        function blowOut() {
-            document.getElementById('flame').style.display = 'none';
-            confetti({ particleCount: 250, spread: 100, origin: { x: 0.25, y: 0.5 } });
-            document.getElementById('candle-sec').innerHTML = "<div class='secret-msg'>I Love You Forever</div>";
-        }
-
-        function addSticker(s) {
-            stickerCount++;
-            const span = document.createElement('span');
-            span.innerText = s;
-            span.className = "sticker-item";
-            document.getElementById('messages').appendChild(span);
-            
-            confetti({ particleCount: 15, spread: 40, origin: { x: 0.75, y: 0.8 } });
-
-            if(stickerCount === 10) {
-                var end = Date.now() + (4 * 1000);
-                (function frame() {
-                    confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 } });
-                    confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 } });
-                    if (Date.now() < end) requestAnimationFrame(frame);
-                }());
-            }
-        }
-
-        function preview(event, idx) {
-            const reader = new FileReader();
-            reader.onload = function(){
-                const slots = document.querySelectorAll('.photo-slot');
-                slots[idx].innerHTML = `<img src="${reader.result}">`;
-            };
             reader.readAsDataURL(event.target.files);
         }
-    </script>
-</body>
-</html>
-        .sticker:hover { transform: scale(1.2); }
-
-        /* COUNTDOWN */
-        #timer { font-size: 1.5rem; font-weight: bold; color: var(--dark-pink); margin-bottom: 10px; }
-        .secret-msg { font-family: 'Dancing Script'; font-size: 3rem; color: var(--dark-pink); animation: pop 0.5s ease; }
-        @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
-    </style>
-</head>
-<body>
-
-    <!-- LOGIN -->
-    <div id="login-screen">
-        <h2 style="color: var(--dark-pink);">Who are you?</h2>
-        <input type="password" id="pass" placeholder="Password...">
-        <button class="btn" onclick="checkLogin()">Open Card</button>
-    </div>
-
-    <!-- MAIN CONTENT -->
-    <div id="main-content">
-        <div class="header">
-            <div id="timer">Loading Countdown...</div>
-            <h1>Happy Birthday, Nadine!</h1>
-            <p style="font-size: 1.2rem;">You are the sweetest part of my life. ❤️</p>
-        </div>
-
-        <!-- BLOW OUT CANDLE -->
-        <div class="candle-section" id="candle-sec">
-            <p>Tiup lilinnya (klik apinya) untuk lihat kejutan!</p>
-            <div class="candle">
-                <div id="flame" class="flame" onclick="blowOut()"></div>
-            </div>
-        </div>
-
-        <!-- GALLERY -->
-        <div class="section">
-            <h3 style="color: var(--dark-pink);">Our Memories 📸</h3>
-            <p style="font-size: 0.8rem; margin-top: -10px;">(Tap kotak untuk tambah foto)</p>
-            <div class="grid">
-                <label class="photo-slot">
-                    <input type="file" style="display:none" onchange="preview(event, 0)">
-                    <span>+</span>
-                </label>
-                <label class="photo-slot">
-                    <input type="file" style="display:none" onchange="preview(event, 1)">
-                    <span>+</span>
-                </label>
-            </div>
-        </div>
-
-        <!-- GUESTBOOK -->
-        <div class="section">
-            <h3 style="color: var(--dark-pink);">Digital Guestbook 🖋️</h3>
-            <div class="guestbook">
-                <p style="font-size: 0.9rem; color: #666;">Beri Nadine stiker (10x untuk kembang api):</p>
-                <div style="margin-bottom: 15px;">
-                    <span class="sticker" onclick="addSticker('💖')">💖</span>
-                    <span class="sticker" onclick="addSticker('🎂')">🎂</span>
-                    <span class="sticker" onclick="addSticker('✨')">✨</span>
-                </div>
-                <div id="messages" style="word-wrap: break-word;"></div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        let stickerCount = 0;
-
-        function checkLogin() {
-            const p = document.getElementById('pass').value;
-            if(p === "LOVE") {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('main-content').style.display = 'block';
-                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
-                startTimer();
-            } else { alert("Password salah!"); }
-        }
-
-        function blowOut() {
-            document.getElementById('flame').style.display = 'none';
-            confetti({ particleCount: 200, spread: 160, origin: { y: 0.5 } });
-            
-            // Perubahan Pesan Rahasia
-            const sec = document.getElementById('candle-sec');
-            sec.innerHTML = "<div class='secret-msg'>I Love You Forever</div>";
-        }
 
         function addSticker(s) {
-            stickerCount++;
             const span = document.createElement('span');
             span.innerText = s;
             span.style.fontSize = "2rem";
             document.getElementById('messages').appendChild(span);
-            
-            // Efek confetti kecil setiap stiker
-            confetti({ particleCount: 10, spread: 50, origin: { y: 0.8 } });
-
-            if(stickerCount === 10) triggerFireworks();
-        }
-
-        function triggerFireworks() {
-            var duration = 5 * 1000;
-            var animationEnd = Date.now() + duration;
-            var interval = setInterval(function() {
-                var timeLeft = animationEnd - Date.now();
-                if (timeLeft <= 0) return clearInterval(interval);
-                confetti({ startVelocity: 30, spread: 360, ticks: 60, zIndex: 0, origin: { x: Math.random(), y: Math.random() - 0.2 } });
-            }, 250);
-        }
-
-        function startTimer() {
-            setInterval(() => {
-                const now = new Date().getTime();
-                // Atur ke waktu lahir Nadine
-                const target = new Date("May 8, 2026 21:00:00").getTime();
-                const diff = target - now;
-
-                if (diff < 0) {
-                    document.getElementById('timer').innerHTML = "It's your special time!";
-                    return;
-                }
-
-                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-                const s = Math.floor((diff % (1000 * 60)) / 1000);
-                document.getElementById('timer').innerHTML = `${h}j ${m}m ${s}d`;
-            }, 1000);
-        }
-
-        function preview(event, idx) {
-            const reader = new FileReader();
-            reader.onload = function(){
-                const slots = document.querySelectorAll('.photo-slot');
-                slots[idx].innerHTML = `<img src="${reader.result}">`;
-            };
-            reader.readAsDataURL(event.target.files[0]);
+            confetti({ particleCount: 15, spread: 40, origin: { x: 0.8, y: 0.8 } });
         }
     </script>
 </body>
