@@ -3,145 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Nadine - 8 March</title>
+    <title>Special for Nadine</title>
+    <link href="https://googleapis.com" rel="stylesheet">
     <style>
         :root {
-            --primary: #ff4d6d;
-            --glass: rgba(255, 255, 255, 0.2);
+            --pink: #ff85a1;
+            --dark-pink: #c9184a;
+            --bg: #ffdee9;
         }
 
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Poppins', sans-serif;
-            background: #0f0c29;
-            background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
-            color: white;
+        body {
+            margin: 0; font-family: 'Quicksand', sans-serif;
+            background: var(--bg);
+            height: 100vh; display: flex; justify-content: center; align-items: center;
             overflow: hidden;
         }
 
-        /* Github Layers Effect (Parallax Background) */
-        .layer {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
+        /* --- LAYAR LOGIN --- */
+        #login-screen {
+            background: white; padding: 40px; border-radius: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center;
+            z-index: 100; width: 300px;
         }
 
-        .layer-1 { background: url('https://transparenttextures.com'); opacity: 0.5; }
+        input {
+            width: 100%; padding: 12px; margin: 15px 0;
+            border: 2px solid var(--bg); border-radius: 10px; outline: none;
+            text-align: center; font-size: 1rem;
+        }
+
+        .btn {
+            background: var(--dark-pink); color: white; border: none;
+            padding: 12px 25px; border-radius: 10px; cursor: pointer; width: 100%;
+            font-weight: bold; transition: 0.3s;
+        }
+
+        .btn:hover { transform: scale(1.05); }
+
+        /* --- LAYAR UTAMA (NADINE) --- */
+        #main-content { display: none; text-align: center; }
+
+        .cake-container { position: relative; height: 180px; margin: 20px 0; cursor: pointer; transition: 0.3s; }
+        .cake-container:active { transform: scale(0.9); }
         
-        /* Glassmorphism Card */
-        .card {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 350px;
-            padding: 40px;
-            background: var(--glass);
-            backdrop-filter: blur(15px);
-            border-radius: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            text-align: center;
-            box-shadow: 0 25px 45px rgba(0,0,0,0.5);
-            z-index: 10;
+        .cake {
+            width: 150px; height: 100px; background: #f4d35e;
+            border-radius: 15px 15px 0 0; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
+            box-shadow: inset 0 15px var(--pink);
+        }
+        .cake::after {
+            content: '💖'; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
+        }
+        .candle {
+            width: 10px; height: 35px; background: #ff4d6d;
+            position: absolute; top: -35px; left: 50%; transform: translateX(-50%); border-radius: 5px;
+        }
+        .flame {
+            width: 15px; height: 25px; background: orange; border-radius: 50%;
+            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
+            animation: flicker 0.2s infinite;
         }
 
-        h1 { font-size: 2.5em; margin-bottom: 10px; color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-        p { font-size: 1.1em; line-height: 1.6; font-weight: 300; }
-
-        /* More Animations: Floating Blobs */
-        .blob {
-            position: absolute;
-            width: 200px;
-            height: 200px;
-            background: var(--primary);
-            filter: blur(80px);
-            border-radius: 50%;
-            z-index: 1;
-            animation: float 10s infinite alternate;
+        /* --- PANEL IBAD --- */
+        #ibad-panel {
+            display: none; background: #333; color: white; padding: 30px;
+            border-radius: 15px; width: 300px; text-align: center;
         }
 
-        @keyframes float {
-            from { transform: translate(0, 0); }
-            to { transform: translate(100px, 150px); }
+        /* --- TOMBOL LAGU --- */
+        #music-trigger {
+            display: none; margin: 20px auto; background: white; color: var(--dark-pink);
+            border: 2px solid var(--dark-pink);
         }
 
-        /* Heart Rain */
-        .heart {
-            position: absolute;
-            font-size: 20px;
-            animation: fall linear forwards;
+        @keyframes flicker { 
+            0% { transform: translateX(-50%) scale(1); } 
+            100% { transform: translateX(-50%) scale(1.2); opacity: 0.8; } 
         }
 
-        @keyframes fall {
-            to { transform: translateY(100vh); opacity: 0; }
+        .floating-heart {
+            position: absolute; animation: fly 3s linear forwards; pointer-events: none;
         }
-
-        /* Play Button (Because browsers block autoplay) */
-        .music-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: var(--primary);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-        .music-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--primary); }
+        @keyframes fly { to { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
     </style>
 </head>
 <body>
 
-    <div class="layer layer-1"></div>
-    <div class="blob" style="top: 10%; left: 10%; background: #6a11cb;"></div>
-    <div class="blob" style="bottom: 10%; right: 10%;"></div>
-
-    <div class="card">
-        <h1>Nadine</h1>
-        <p><i>"Se te olvida, que me quieres a pesar de lo que dices..."</i></p>
-        <p>Hari ini <b>8 Maret</b>, Hari Perempuan Internasional. Kamu adalah bukti bahwa dunia ini indah. ❤️</p>
-        
-        <button class="music-btn" onclick="playMusic()">Play Our Song 🎵</button>
+    <!-- SCREEN 1: LOGIN -->
+    <div id="login-screen">
+        <h2 style="color: var(--dark-pink);">Who are you?</h2>
+        <input type="password" id="pass" placeholder="Enter Password...">
+        <button class="btn" onclick="checkPass()">Login</button>
     </div>
 
-    <!-- Link musik La Mentira (Pastikan file/url aktif) -->
-    <audio id="myAudio" loop>
-        <source src="https://soundhelix.com" type="audio/mpeg">
-        <!-- Gantilah URL di atas dengan link MP3 La Mentira milikmu -->
+    <!-- SCREEN 2: NADINE (MAIN) -->
+    <div id="main-content">
+        <h1 id="title" style="font-family: 'Dancing Script'; color: var(--dark-pink); font-size: 3.5rem;">For Nadine</h1>
+        <div class="cake-container" onclick="handleCakeTap()">
+            <div class="candle"><div class="flame"></div></div>
+            <div class="cake"></div>
+        </div>
+        <p id="msg" style="color: #666;">Tap kuenya buat kejutan...</p>
+        <button id="music-trigger" class="btn" onclick="playSong()">🎵 Play "For You" 🎵</button>
+    </div>
+
+    <!-- SCREEN 3: IBAD (ADMIN) -->
+    <div id="ibad-panel">
+        <h3 style="color: var(--pink);">Halo Ibad! 😎</h3>
+        <p>Panel Ganti Lagu</p>
+        <input type="file" id="upload" accept="audio/*" style="background: white; font-size: 0.8rem; color: black;">
+        <p style="font-size: 0.7rem; opacity: 0.7;">(Upload file buat tes ganti lagu)</p>
+        <button class="btn" onclick="location.reload()" style="background: #555; margin-top: 10px;">Logout</button>
+    </div>
+
+    <audio id="song" loop>
+        <source src="foryou.mp3" type="audio/mpeg">
     </audio>
 
     <script>
-        function playMusic() {
-            const audio = document.getElementById("myAudio");
-            audio.play();
-            document.querySelector(".music-btn").style.display = "none";
+        let songElement = document.getElementById('song');
+
+        function checkPass() {
+            const p = document.getElementById('pass').value;
+            const login = document.getElementById('login-screen');
+
+            if(p === "LOVE") {
+                login.style.display = "none";
+                document.getElementById('main-content').style.display = "block";
+            } else if(p === "ibad") {
+                login.style.display = "none";
+                document.getElementById('ibad-panel').style.display = "block";
+            } else {
+                alert("Salah pass-nya!");
+            }
+        }
+
+        function handleCakeTap() {
+            document.getElementById('music-trigger').style.display = "block";
+            document.getElementById('msg').innerText = "Special song for you...";
+            
+            for(let i=0; i<15; i++) {
+                setTimeout(createHeart, i * 150);
+            }
+        }
+
+        function playSong() {
+            songElement.play().catch(e => {
+                alert("Lagu 'foryou.mp3' belum ketemu di folder. Pastikan sudah di-upload ke Vercel ya!");
+            });
+            document.getElementById('music-trigger').innerText = "Now Playing: For You ❤️";
         }
 
         function createHeart() {
-            const heart = document.createElement('div');
-            heart.classList.add('heart');
-            heart.innerHTML = '❤️';
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.top = '-5vh';
-            heart.style.duration = Math.random() * 3 + 2 + 's';
-            heart.style.opacity = Math.random();
-            document.body.appendChild(heart);
-            
-            setTimeout(() => { heart.remove(); }, 4000);
+            const emojis = ["💖", "🌸", "🧁", "✨", "🍰"];
+            const h = document.createElement('div');
+            h.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+            h.className = "floating-heart";
+            h.style.left = Math.random() * 90 + "vw";
+            h.style.bottom = "-50px";
+            h.style.fontSize = Math.random() * 20 + 20 + "px";
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 3000);
         }
-        setInterval(createHeart, 200);
 
-        // Parallax Effect for Github Layers
-        document.addEventListener('mousemove', (e) => {
-            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
-            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
-            document.querySelector('.card').style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+        // Handle Ibad upload simulation
+        document.getElementById('upload').addEventListener('change', function(e){
+            const file = e.target.files[0];
+            if(file){
+                const url = URL.createObjectURL(file);
+                songElement.src = url;
+                alert("Lagu 'For You' berhasil dimuat di browser!");
+            }
         });
     </script>
 </body>
