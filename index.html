@@ -3,178 +3,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Special for Nadine</title>
+    <title>HBD Nadine! 🎂</title>
     <link href="https://googleapis.com" rel="stylesheet">
+    <script src="https://jsdelivr.net"></script>
     <style>
-        :root {
-            --pink: #ff85a1;
-            --dark-pink: #c9184a;
-            --bg: #ffdee9;
-        }
-
-        body {
-            margin: 0; font-family: 'Quicksand', sans-serif;
-            background: var(--bg);
-            height: 100vh; display: flex; justify-content: center; align-items: center;
-            overflow: hidden;
-        }
-
-        /* --- LAYAR LOGIN --- */
-        #login-screen {
-            background: white; padding: 40px; border-radius: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center;
-            z-index: 100; width: 300px;
-        }
-
-        input {
-            width: 100%; padding: 12px; margin: 15px 0;
-            border: 2px solid var(--bg); border-radius: 10px; outline: none;
-            text-align: center; font-size: 1rem;
-        }
-
-        .btn {
-            background: var(--dark-pink); color: white; border: none;
-            padding: 12px 25px; border-radius: 10px; cursor: pointer; width: 100%;
-            font-weight: bold; transition: 0.3s;
-        }
-
-        .btn:hover { transform: scale(1.05); }
-
-        /* --- LAYAR UTAMA (NADINE) --- */
-        #main-content { display: none; text-align: center; }
-
-        .cake-container { position: relative; height: 180px; margin: 20px 0; cursor: pointer; transition: 0.3s; }
-        .cake-container:active { transform: scale(0.9); }
+        :root { --pink: #ff85a1; --dark-pink: #c9184a; --bg: #fff0f3; }
+        body { margin: 0; font-family: 'Quicksand', sans-serif; background: var(--bg); color: #333; overflow-x: hidden; }
         
-        .cake {
-            width: 150px; height: 100px; background: #f4d35e;
-            border-radius: 15px 15px 0 0; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%);
-            box-shadow: inset 0 15px var(--pink);
-        }
-        .cake::after {
-            content: '💖'; position: absolute; top: 10px; left: 50%; transform: translateX(-50%);
-        }
-        .candle {
-            width: 10px; height: 35px; background: #ff4d6d;
-            position: absolute; top: -35px; left: 50%; transform: translateX(-50%); border-radius: 5px;
-        }
-        .flame {
-            width: 15px; height: 25px; background: orange; border-radius: 50%;
-            position: absolute; top: -20px; left: 50%; transform: translateX(-50%);
-            animation: flicker 0.2s infinite;
-        }
+        /* LAYAR LOGIN */
+        #login-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; z-index: 1000; position: fixed; width: 100%; }
+        input { padding: 15px; border: 2px solid var(--pink); border-radius: 15px; width: 250px; text-align: center; font-size: 1.1rem; outline: none; }
+        .btn { background: var(--dark-pink); color: white; border: none; padding: 12px 30px; border-radius: 15px; cursor: pointer; margin-top: 15px; font-weight: bold; }
 
-        /* --- PANEL IBAD --- */
-        #ibad-panel {
-            display: none; background: #333; color: white; padding: 30px;
-            border-radius: 15px; width: 300px; text-align: center;
-        }
+        /* KONTEN UTAMA */
+        #main-content { display: none; padding-bottom: 50px; }
+        .header { text-align: center; padding: 50px 20px; }
+        h1 { font-family: 'Dancing Script', cursive; font-size: 4rem; color: var(--dark-pink); margin: 0; }
 
-        /* --- TOMBOL LAGU --- */
-        #music-trigger {
-            display: none; margin: 20px auto; background: white; color: var(--dark-pink);
-            border: 2px solid var(--dark-pink);
-        }
+        /* LILIN DIGITAL */
+        .candle-section { text-align: center; padding: 40px 0; background: white; margin: 20px; border-radius: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .candle { width: 15px; height: 50px; background: #ff4d6d; margin: 0 auto; position: relative; border-radius: 5px; }
+        .flame { width: 20px; height: 30px; background: orange; border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%; position: absolute; top: -25px; left: -2px; animation: flicker 0.1s infinite alternate; cursor: pointer; }
+        @keyframes flicker { from { transform: scale(1); } to { transform: scale(1.1); } }
 
-        @keyframes flicker { 
-            0% { transform: translateX(-50%) scale(1); } 
-            100% { transform: translateX(-50%) scale(1.2); opacity: 0.8; } 
-        }
+        /* GALLERY & GUESTBOOK */
+        .section { padding: 30px 20px; max-width: 600px; margin: 0 auto; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .photo-slot { aspect-ratio: 1; background: #ddd; border-radius: 10px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .guestbook { background: white; padding: 20px; border-radius: 20px; min-height: 200px; }
+        .sticker { font-size: 2rem; display: inline-block; cursor: grab; }
 
-        .floating-heart {
-            position: absolute; animation: fly 3s linear forwards; pointer-events: none;
-        }
-        @keyframes fly { to { transform: translateY(-100vh) rotate(360deg); opacity: 0; } }
+        /* COUNTDOWN */
+        #timer { font-size: 1.5rem; font-weight: bold; color: var(--dark-pink); }
     </style>
 </head>
 <body>
 
-    <!-- SCREEN 1: LOGIN -->
+    <!-- LOGIN -->
     <div id="login-screen">
         <h2 style="color: var(--dark-pink);">Who are you?</h2>
-        <input type="password" id="pass" placeholder="Enter Password...">
-        <button class="btn" onclick="checkPass()">Login</button>
+        <input type="password" id="pass" placeholder="Password...">
+        <button class="btn" onclick="checkLogin()">Open Card</button>
     </div>
 
-    <!-- SCREEN 2: NADINE (MAIN) -->
+    <!-- MAIN -->
     <div id="main-content">
-        <h1 id="title" style="font-family: 'Dancing Script'; color: var(--dark-pink); font-size: 3.5rem;">For Nadine</h1>
-        <div class="cake-container" onclick="handleCakeTap()">
-            <div class="candle"><div class="flame"></div></div>
-            <div class="cake"></div>
+        <div class="header">
+            <div id="timer">Countdown to Birth Hour...</div>
+            <h1>Happy Birthday, Nadine!</h1>
+            <p style="font-size: 1.2rem;">You are the sweetest part of my life. ❤️</p>
         </div>
-        <p id="msg" style="color: #666;">Tap kuenya buat kejutan...</p>
-        <button id="music-trigger" class="btn" onclick="playSong()">🎵 Play "For You" 🎵</button>
+
+        <!-- BLOW OUT CANDLE -->
+        <div class="candle-section" id="candle-sec">
+            <p>Tiup lilinnya (klik apinya) untuk lihat kejutan!</p>
+            <div class="candle">
+                <div class="flame" id="flame" onclick="blowOut()"></div>
+            </div>
+        </div>
+
+        <!-- GALLERY -->
+        <div class="section">
+            <h3 style="color: var(--dark-pink);">Our Memories 📸</h3>
+            <div class="grid">
+                <div class="photo-slot"><input type="file" onchange="preview(event, 0)"></div>
+                <div class="photo-slot"><input type="file" onchange="preview(event, 1)"></div>
+            </div>
+        </div>
+
+        <!-- GUESTBOOK -->
+        <div class="section">
+            <h3 style="color: var(--dark-pink);">Guestbook & Stickers 🖋️</h3>
+            <div class="guestbook" id="gb">
+                <p style="font-size: 0.8rem; color: #999;">Klik sticker untuk ditambahkan:</p>
+                <span class="sticker" onclick="addSticker('💖')">💖</span>
+                <span class="sticker" onclick="addSticker('🎂')">🎂</span>
+                <span class="sticker" onclick="addSticker('✨')">✨</span>
+                <div id="messages"></div>
+            </div>
+        </div>
     </div>
 
-    <!-- SCREEN 3: IBAD (ADMIN) -->
-    <div id="ibad-panel">
-        <h3 style="color: var(--pink);">Halo Ibad! 😎</h3>
-        <p>Panel Ganti Lagu</p>
-        <input type="file" id="upload" accept="audio/*" style="background: white; font-size: 0.8rem; color: black;">
-        <p style="font-size: 0.7rem; opacity: 0.7;">(Upload file buat tes ganti lagu)</p>
-        <button class="btn" onclick="location.reload()" style="background: #555; margin-top: 10px;">Logout</button>
-    </div>
-
-    <audio id="song" loop>
-        <source src="foryou.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="hbdMusic" loop><source src="foryou.mp3" type="audio/mpeg"></audio>
 
     <script>
-        let songElement = document.getElementById('song');
+        let stickerCount = 0;
+        const song = document.getElementById('hbdMusic');
 
-        function checkPass() {
+        function checkLogin() {
             const p = document.getElementById('pass').value;
-            const login = document.getElementById('login-screen');
-
             if(p === "LOVE") {
-                login.style.display = "none";
-                document.getElementById('main-content').style.display = "block";
-            } else if(p === "ibad") {
-                login.style.display = "none";
-                document.getElementById('ibad-panel').style.display = "block";
-            } else {
-                alert("Salah pass-nya!");
-            }
+                document.getElementById('login-screen').style.display = 'none';
+                document.getElementById('main-content').style.display = 'block';
+                confetti({ particleCount: 150, spread: 70, origin: { y: 0.6 } });
+                startTimer();
+            } else { alert("Salah password!"); }
         }
 
-        function handleCakeTap() {
-            document.getElementById('music-trigger').style.display = "block";
-            document.getElementById('msg').innerText = "Special song for you...";
-            
-            for(let i=0; i<15; i++) {
-                setTimeout(createHeart, i * 150);
-            }
+        function blowOut() {
+            document.getElementById('flame').style.display = 'none';
+            song.play();
+            confetti({ particleCount: 200, spread: 160 });
+            alert("SURPRISE! I Love You Nadine! 🎁❤️");
+            document.getElementById('candle-sec').innerHTML = "<h3>🎁 KADO BUAT KAMU: [ISI PESAN RAHASIA DISINI] 🎁</h3>";
         }
 
-        function playSong() {
-            songElement.play().catch(e => {
-                alert("Lagu 'foryou.mp3' belum ketemu di folder. Pastikan sudah di-upload ke Vercel ya!");
-            });
-            document.getElementById('music-trigger').innerText = "Now Playing: For You ❤️";
+        function addSticker(s) {
+            stickerCount++;
+            const span = document.createElement('span');
+            span.innerText = s;
+            span.style.fontSize = "2rem";
+            document.getElementById('messages').appendChild(span);
+            if(stickerCount === 10) triggerFireworks();
         }
 
-        function createHeart() {
-            const emojis = ["💖", "🌸", "🧁", "✨", "🍰"];
-            const h = document.createElement('div');
-            h.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
-            h.className = "floating-heart";
-            h.style.left = Math.random() * 90 + "vw";
-            h.style.bottom = "-50px";
-            h.style.fontSize = Math.random() * 20 + 20 + "px";
-            document.body.appendChild(h);
-            setTimeout(() => h.remove(), 3000);
+        function triggerFireworks() {
+            var duration = 5 * 1000;
+            var animationEnd = Date.now() + duration;
+            var interval = setInterval(function() {
+                var timeLeft = animationEnd - Date.now();
+                if (timeLeft <= 0) return clearInterval(interval);
+                confetti({ startVelocity: 30, spread: 360, ticks: 60, zIndex: 0, origin: { x: Math.random(), y: Math.random() - 0.2 } });
+            }, 250);
+            alert("FIREWORKS! 10 Stickers Reached! 🎆");
         }
 
-        // Handle Ibad upload simulation
-        document.getElementById('upload').addEventListener('change', function(e){
-            const file = e.target.files[0];
-            if(file){
-                const url = URL.createObjectURL(file);
-                songElement.src = url;
-                alert("Lagu 'For You' berhasil dimuat di browser!");
-            }
-        });
+        function startTimer() {
+            setInterval(() => {
+                const now = new Date().getTime();
+                // Ganti tanggal di bawah dengan jam lahir Nadine yang sebenarnya
+                const target = new Date("May 8, 2026 21:00:00").getTime();
+                const diff = target - now;
+                const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const s = Math.floor((diff % (1000 * 60)) / 1000);
+                document.getElementById('timer').innerHTML = `Countdown: ${h}h ${m}m ${s}s`;
+            }, 1000);
+        }
+
+        function preview(event, idx) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                const output = document.querySelectorAll('.photo-slot')[idx];
+                output.innerHTML = `<img src="${reader.result}">`;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
     </script>
 </body>
 </html>
