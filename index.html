@@ -3,37 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>For Nadine</title>
+    <title>For Nadine ❤️</title>
     <style>
         :root { --pink: #ff85a1; --dark: #c9184a; --bg: #fff0f3; }
-        body { margin: 0; font-family: sans-serif; background: var(--bg); overflow: hidden; }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); overflow: hidden; height: 100vh; }
         
-        #login-screen { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; background: var(--bg); z-index: 100; }
-        .box { background: white; padding: 30px; border-radius: 20px; border: 2px solid var(--pink); text-align: center; }
-        input { padding: 10px; border: 1px solid #ddd; border-radius: 8px; text-align: center; width: 180px; }
-        .btn { background: var(--dark); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; margin-top: 15px; font-weight: bold; }
+        /* LOGIN CENTER */
+        #login-screen { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; background: var(--bg); z-index: 1000; }
+        .box { background: white; padding: 40px; border-radius: 30px; box-shadow: 0 15px 35px rgba(201,24,74,0.15); text-align: center; border: 2px solid var(--pink); animation: fadeIn 0.8s ease; }
+        input { padding: 12px; border: 2px solid #eee; border-radius: 12px; text-align: center; width: 220px; font-size: 1rem; outline: none; transition: 0.3s; }
+        input:focus { border-color: var(--pink); }
+        .btn { background: var(--dark); color: white; border: none; padding: 12px 30px; border-radius: 12px; cursor: pointer; margin-top: 20px; font-weight: bold; width: 100%; transition: 0.3s; }
+        .btn:hover { transform: scale(1.05); box-shadow: 0 5px 15px rgba(201,24,74,0.3); }
 
-        #main-content { display: none; grid-template-columns: 1fr 1fr; height: 100vh; }
-        .left { display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 2px dashed var(--pink); text-align: center; padding: 20px; }
-        .right { padding: 20px; background: rgba(255,255,255,0.5); overflow-y: auto; }
+        /* LANDSCAPE CONTENT */
+        #main-content { display: none; grid-template-columns: 1fr 1fr; height: 100vh; opacity: 0; transition: opacity 1s ease; }
+        .left { display: flex; flex-direction: column; justify-content: center; align-items: center; border-right: 2px dashed var(--pink); padding: 40px; text-align: center; position: relative; }
+        .right { padding: 40px; background: rgba(255,255,255,0.4); display: flex; flex-direction: column; justify-content: center; }
 
-        .candle { width: 15px; height: 50px; background: var(--pink); margin: 20px auto; position: relative; border-radius: 5px; }
-        .flame { width: 20px; height: 30px; background: orange; border-radius: 50%; position: absolute; top: -25px; left: -2px; cursor: pointer; box-shadow: 0 0 15px orange; }
+        h1 { color: var(--dark); font-size: 3rem; margin: 0; filter: drop-shadow(2px 2px white); }
+        p { color: #666; font-size: 1.1rem; }
 
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; }
-        .slot { aspect-ratio: 4/3; background: #ffe5ec; border-radius: 10px; border: 2px solid var(--pink); position: relative; overflow: hidden; }
+        /* CANDLE ANIMATION */
+        .candle { width: 20px; height: 70px; background: linear-gradient(var(--pink), #ffccd5); margin: 30px auto; position: relative; border-radius: 8px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .flame { width: 24px; height: 35px; background: #ff9d00; border-radius: 50% 50% 20% 20%; position: absolute; top: -30px; left: -2px; cursor: pointer; animation: flicker 0.1s infinite alternate; box-shadow: 0 0 20px #ff9d00; }
+        @keyframes flicker { from { transform: scale(1); opacity: 0.9; } to { transform: scale(1.1); opacity: 1; } }
+
+        /* PHOTO GRID */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .slot { aspect-ratio: 4/3; background: white; border-radius: 20px; border: 3px solid white; box-shadow: 0 10px 20px rgba(0,0,0,0.1); position: relative; overflow: hidden; transform: rotate(-2deg); transition: 0.5s; }
+        .slot:nth-child(2) { transform: rotate(3deg); }
+        .slot:hover { transform: rotate(0deg) scale(1.05); z-index: 10; }
         .slot img { width: 100%; height: 100%; object-fit: cover; }
-        .edit { display: none; position: absolute; top: 5px; background: var(--dark); color: white; font-size: 10px; padding: 4px; border-radius: 4px; cursor: pointer; }
+        .edit { display: none; position: absolute; bottom: 10px; right: 10px; background: var(--dark); color: white; padding: 5px 10px; border-radius: 8px; font-size: 12px; cursor: pointer; }
 
-        .secret { font-size: 2.2rem; color: var(--dark); font-weight: bold; line-height: 1.2; }
+        /* FIREWORKS CANVAS */
+        #fw { position: fixed; inset: 0; pointer-events: none; z-index: 99; }
+        .secret-msg { font-size: 3.5rem; color: var(--dark); font-weight: bold; animation: pop 0.8s cubic-bezier(0.17, 0.89, 0.32, 1.49); }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
     </style>
 </head>
 <body>
 
+    <canvas id="fw"></canvas>
+
     <div id="login-screen">
         <div class="box">
-            <h2 style="color: var(--dark);">Password? ❤️</h2>
-            <input type="password" id="pass" placeholder="...">
+            <h2 style="color: var(--dark); margin: 0 0 20px;">For Someone Special... ❤️</h2>
+            <input type="password" id="pass" placeholder="Password?">
+            <br>
+            <button class="btn" onclick="check()">Open Card</button>
+        </div>
+    </div>
+
+    <div id="main-content">
+        <div class="left">
+            <h1 id="main-title">Happy Birthday, Nadine!</h1>
+            <p>Terima kasih sudah menjadi bagian terindah tahun ini. ❤️</p>
+            <div id="candle-sec">
+                <div class="candle"><div id="flame" class="flame" onclick="blow()"></div></div>
+                <p id="hint" style="font-size: 0.9rem;">Klik apinya untuk kejutan...</p>
+            </div>
+        </div>
+        <div class="right">
+            <h2 style="color: var(--dark); margin-bottom: 20px;">Memories 📸</h2>
+            <div class="grid">
+                <div class="slot">
+                    <img id="i0" src="IMG-20260508-WA0020_edit_61381549726688.jpg">
+                    <label class="edit" id="e0">Edit <input type="file" style="display:none" onchange="pre(event, 0)"></label>
+                </div>
+                <div class="slot">
+                    <img id="i1" src="IMG-20260508-WA0016.jpg">
+                    <label class="edit" id="e1">Edit <input type="file" style="display:none" onchange="pre(event, 1)"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('fw');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        function check() {
+            const p = document.getElementById('pass').value;
+            if(p === "LOVE" || p === "ibad") {
+                document.getElementById('login-screen').style.display = 'none';
+                const main = document.getElementById('main-content');
+                main.style.display = 'grid';
+                setTimeout(() => main.style.opacity = "1", 50);
+                if(p === "ibad") {
+                    document.getElementById('e0').style.display = 'block';
+                    document.getElementById('e1').style.display = 'block';
+                    document.getElementById('main-title').innerText = "Preview Mode 😎";
+                }
+            } else { alert("Password salah, Honey!"); }
+        }
+
+        function blow() {
+            document.getElementById('flame').style.display = 'none';
+            document.getElementById('hint').style.display = 'none';
+            document.getElementById('candle-sec').innerHTML = "<div class='secret-msg'>I Love You Forever ❤️</div>";
+            startFireworks();
+        }
+
+        // FIREWORKS ENGINE (SUPER FAST & NO LIBRARY)
+        let particles = [];
+        function startFireworks() {
+            for(let i=0; i<100; i++) {
+                particles.push({
+                    x: canvas.width / 4,
+                    y: canvas.height / 2,
+                    vx: Math.random() * 10 - 5,
+                    vy: Math.random() * 10 - 5,
+                    size: Math.random() * 4 + 2,
+                    color: `hsl(${Math.random() * 360}, 100%, 50%)`,
+                    life: 100
+                });
+            }
+            animate();
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach((p, i) => {
+                p.x += p.vx; p.y += p.vy; p.vy += 0.05; p.life--;
+                ctx.fillStyle = p.color;
+                ctx.beginPath(); ctx.arc(p.x, p.y, p.size, 0, Math.PI*2); ctx.fill();
+                if(p.life <= 0) particles.splice(i, 1);
+            });
+            if(particles.length > 0) requestAnimationFrame(animate);
+        }
+
+        function pre(e, i) {
+            const r = new FileReader();
+            r.onload = () => document.getElementById('i' + i).src = r.result;
+            r.readAsDataURL(e.target.files);
+        }
+    </script>
+</body>
+</html>
             <br>
             <button class="btn" onclick="check()">Masuk</button>
         </div>
