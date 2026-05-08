@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For Nadine - 8 March</title>
+    <style>
+        :root {
+            --primary: #ff4d6d;
+            --glass: rgba(255, 255, 255, 0.2);
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Poppins', sans-serif;
+            background: #0f0c29;
+            background: linear-gradient(to bottom, #24243e, #302b63, #0f0c29);
+            color: white;
+            overflow: hidden;
+        }
+
+        /* Github Layers Effect (Parallax Background) */
+        .layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+
+        .layer-1 { background: url('https://transparenttextures.com'); opacity: 0.5; }
+        
+        /* Glassmorphism Card */
+        .card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 350px;
+            padding: 40px;
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            text-align: center;
+            box-shadow: 0 25px 45px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+
+        h1 { font-size: 2.5em; margin-bottom: 10px; color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        p { font-size: 1.1em; line-height: 1.6; font-weight: 300; }
+
+        /* More Animations: Floating Blobs */
+        .blob {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: var(--primary);
+            filter: blur(80px);
+            border-radius: 50%;
+            z-index: 1;
+            animation: float 10s infinite alternate;
+        }
+
+        @keyframes float {
+            from { transform: translate(0, 0); }
+            to { transform: translate(100px, 150px); }
+        }
+
+        /* Heart Rain */
+        .heart {
+            position: absolute;
+            font-size: 20px;
+            animation: fall linear forwards;
+        }
+
+        @keyframes fall {
+            to { transform: translateY(100vh); opacity: 0; }
+        }
+
+        /* Play Button (Because browsers block autoplay) */
+        .music-btn {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background: var(--primary);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        .music-btn:hover { transform: scale(1.1); box-shadow: 0 0 20px var(--primary); }
+    </style>
+</head>
+<body>
+
+    <div class="layer layer-1"></div>
+    <div class="blob" style="top: 10%; left: 10%; background: #6a11cb;"></div>
+    <div class="blob" style="bottom: 10%; right: 10%;"></div>
+
+    <div class="card">
+        <h1>Nadine</h1>
+        <p><i>"Se te olvida, que me quieres a pesar de lo que dices..."</i></p>
+        <p>Hari ini <b>8 Maret</b>, Hari Perempuan Internasional. Kamu adalah bukti bahwa dunia ini indah. ❤️</p>
+        
+        <button class="music-btn" onclick="playMusic()">Play Our Song 🎵</button>
+    </div>
+
+    <!-- Link musik La Mentira (Pastikan file/url aktif) -->
+    <audio id="myAudio" loop>
+        <source src="https://soundhelix.com" type="audio/mpeg">
+        <!-- Gantilah URL di atas dengan link MP3 La Mentira milikmu -->
+    </audio>
+
+    <script>
+        function playMusic() {
+            const audio = document.getElementById("myAudio");
+            audio.play();
+            document.querySelector(".music-btn").style.display = "none";
+        }
+
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            heart.innerHTML = '❤️';
+            heart.style.left = Math.random() * 100 + 'vw';
+            heart.style.top = '-5vh';
+            heart.style.duration = Math.random() * 3 + 2 + 's';
+            heart.style.opacity = Math.random();
+            document.body.appendChild(heart);
+            
+            setTimeout(() => { heart.remove(); }, 4000);
+        }
+        setInterval(createHeart, 200);
+
+        // Parallax Effect for Github Layers
+        document.addEventListener('mousemove', (e) => {
+            const moveX = (e.clientX - window.innerWidth / 2) * 0.01;
+            const moveY = (e.clientY - window.innerHeight / 2) * 0.01;
+            document.querySelector('.card').style.transform = `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+        });
+    </script>
+</body>
+</html>
