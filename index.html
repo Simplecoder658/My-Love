@@ -8,32 +8,133 @@
     <script src="https://jsdelivr.net"></script>
     <style>
         :root { --pink: #ff85a1; --dark-pink: #c9184a; --bg: #fff0f3; }
+        body { margin: 0; font-family: 'Quicksand', sans-serif; background: var(--bg); height: 100vh; width: 100vw; overflow: hidden; }
         
-        body { 
-            margin: 0; font-family: 'Quicksand', sans-serif; 
-            background: var(--bg); color: #333; 
-            height: 100vh; width: 100vw; overflow: hidden;
-        }
-        
-        /* LAYAR LOGIN */
-        #login-screen { 
-            height: 100vh; display: flex; flex-direction: column; 
-            justify-content: center; align-items: center; 
-            background: white; z-index: 1000; position: fixed; width: 100%; 
+        /* LOGIN */
+        #login-screen { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white; z-index: 1000; position: fixed; width: 100%; }
+        input { padding: 12px; border: 2px solid var(--pink); border-radius: 10px; text-align: center; outline: none; }
+        .btn { background: var(--dark-pink); color: white; border: none; padding: 10px 25px; border-radius: 10px; cursor: pointer; margin-top: 10px; font-weight: bold; }
+
+        /* MAIN LAYOUT */
+        #main-content { display: none; grid-template-columns: 1fr 1fr; height: 100vh; width: 100vw; }
+        .left-side { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 20px; border-right: 2px dashed var(--pink); text-align: center; }
+        .right-side { padding: 20px; background: rgba(255, 255, 255, 0.3); overflow-y: auto; }
+
+        h1 { font-family: 'Dancing Script', cursive; font-size: 3.5rem; color: var(--dark-pink); margin: 0; }
+        .candle { width: 15px; height: 60px; background: #ff4d6d; margin: 30px auto; position: relative; border-radius: 5px; }
+        .flame { width: 22px; height: 32px; background: orange; border-radius: 50%; position: absolute; top: -28px; left: -3px; animation: flicker 0.1s infinite alternate; cursor: pointer; box-shadow: 0 0 20px orange; }
+        @keyframes flicker { from { transform: scale(1); } to { transform: scale(1.2); } }
+
+        /* PHOTO GRID */
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+        .photo-slot { aspect-ratio: 4/3; background: #ffe5ec; border-radius: 15px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 2px dashed var(--pink); position: relative; }
+        .photo-slot img { width: 100%; height: 100%; object-fit: cover; }
+        .edit-label { display: none; position: absolute; background: var(--dark-pink); color: white; padding: 5px 10px; font-size: 0.7rem; border-radius: 5px; cursor: pointer; }
+
+        /* GUESTBOOK */
+        .guestbook { background: white; padding: 15px; border-radius: 20px; text-align: center; }
+        .sticker { font-size: 2.2rem; cursor: pointer; margin: 0 5px; transition: 0.2s; display: inline-block; }
+        .secret-msg { font-family: 'Dancing Script'; font-size: 3.5rem; color: var(--dark-pink); animation: pop 0.6s ease-out; }
+        @keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
+    </style>
+</head>
+<body>
+
+    <div id="login-screen">
+        <h2 style="color: var(--dark-pink);">Password?</h2>
+        <input type="password" id="pass" placeholder="...">
+        <button class="btn" onclick="checkLogin()">Login</button>
+    </div>
+
+    <div id="main-content">
+        <div class="left-side">
+            <h1 id="user-title">Happy Birthday, Nadine!</h1>
+            <p id="user-sub">You're the sweetest part of my life. ❤️</p>
+            <div id="candle-sec">
+                <div class="candle"><div id="flame" class="flame" onclick="blowOut()"></div></div>
+                <p id="hint" style="font-size: 0.8rem; color: #666;">Tiup lilinnya (klik api)</p>
+            </div>
+        </div>
+
+        <div class="right-side">
+            <h3 style="color: var(--dark-pink); margin-top: 0;">Memories 📸</h3>
+            <div class="grid">
+                <div class="photo-slot" id="slot-0">
+                    <img id="img-0" src="https://placeholder.com">
+                    <label class="edit-label" id="label-0">Ganti Foto <input type="file" style="display:none" onchange="preview(event, 0)"></label>
+                </div>
+                <div class="photo-slot" id="slot-1">
+                    <img id="img-1" src="https://placeholder.com">
+                    <label class="edit-label" id="label-1">Ganti Foto <input type="file" style="display:none" onchange="preview(event, 1)"></label>
+                </div>
+            </div>
+            <div class="guestbook">
+                <p style="font-size: 0.8rem; color: #666;">Beri Nadine Stiker:</p>
+                <span class="sticker" onclick="addSticker('💖')">💖</span>
+                <span class="sticker" onclick="addSticker('🎂')">🎂</span>
+                <span class="sticker" onclick="addSticker('✨')">✨</span>
+                <div id="messages" style="margin-top:10px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let mode = "nadine";
+
+        function checkLogin() {
+            const p = document.getElementById('pass').value;
+            const main = document.getElementById('main-content');
+            const login = document.getElementById('login-screen');
+
+            if(p === "LOVE") {
+                mode = "nadine";
+                login.style.display = 'none';
+                main.style.display = 'grid';
+            } else if(p === "ibad") {
+                mode = "ibad";
+                login.style.display = 'none';
+                main.style.display = 'grid';
+                // Aktifkan tombol edit cuma buat Ibad
+                document.getElementById('label-0').style.display = 'block';
+                document.getElementById('label-1').style.display = 'block';
+                document.getElementById('user-title').innerText = "Preview Mode (Ibad)";
+                document.getElementById('user-sub').innerText = "Di sini kamu bisa tes ganti foto";
+            } else { alert("Password salah!"); }
         }
 
-        /* LAYOUT LANDSCAPE */
-        #main-content { 
-            display: none; 
-            display: grid;
-            grid-template-columns: 1fr 1fr; /* Bagi dua layar kiri & kanan */
-            height: 100vh;
-            width: 100vw;
+        function blowOut() {
+            document.getElementById('flame').style.display = 'none';
+            document.getElementById('hint').style.display = 'none';
+            
+            // Kembang Api Meriah
+            var end = Date.now() + (3 * 1000);
+            (function frame() {
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 } });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 } });
+                if (Date.now() < end) requestAnimationFrame(frame);
+            }());
+
+            document.getElementById('candle-sec').innerHTML = "<div class='secret-msg'>I Love You Forever</div>";
         }
 
-        /* SISI KIRI: Header & Lilin */
-        .left-side {
-            display: flex; flex-direction: column;
+        function preview(event, idx) {
+            const reader = new FileReader();
+            reader.onload = function(){
+                document.getElementById('img-' + idx).src = reader.result;
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+
+        function addSticker(s) {
+            const span = document.createElement('span');
+            span.innerText = s;
+            span.style.fontSize = "2rem";
+            document.getElementById('messages').appendChild(span);
+            confetti({ particleCount: 10, spread: 30, origin: { x: 0.7, y: 0.8 } });
+        }
+    </script>
+</body>
+</html>
             justify-content: center; align-items: center;
             padding: 20px; border-right: 2px dashed var(--pink);
         }
